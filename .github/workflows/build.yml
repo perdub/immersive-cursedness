@@ -10,6 +10,9 @@ on:
       - 'docs/**'
   pull_request:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,3 +34,28 @@ jobs:
 
       - name: Build
         run: ./gradlew build
+
+      - name: Prepare Latest Jar
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: |
+          JAR_FILE=$(ls build/libs/*.jar | grep -v -E "sources|dev" | head -n 1)
+          if [ -n "$JAR_FILE" ] && [ -f "$JAR_FILE" ]; then
+            cp "$JAR_FILE" build/libs/immersive-cursedness-latest.jar
+          fi
+
+      - name: Publish Latest Release
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: "Latest Build"
+          body: |
+            Automated build from commit ${{ github.sha }}.
+            
+            **Direct Download:** [immersive-cursedness-latest.jar](https://github.com/${{ github.repository }}/releases/download/latest/immersive-cursedness-latest.jar)
+          make_latest: true
+          files: |
+            build/libs/*.jar
+            !build/libs/*-dev.jar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
