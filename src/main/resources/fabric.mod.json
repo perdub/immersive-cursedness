@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "immersive-cursedness",
+  "version": "${version}",
+
+  "name": "Immersive Cursedness",
+  "description": "Immersive portals but serverside. Together with some lovely cursed multithreading",
+  "authors": [
+    "TheEpicBlock",
+    "ThatCreeper"
+  ],
+  "contact": {
+    "homepage": "https://github.com/ThatCreeper/immersive-cursedness",
+    "sources": "https://github.com/ThatCreeper/immersive-cursedness"
+  },
+
+  "license": "MIT",
+  "icon": "assets/immersive-cursedness/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "nl.theepicblock.immersive_cursedness.ImmersiveCursedness"
+    ]
+  },
+  "mixins": [
+    "immersive-cursedness.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "fabric": "*",
+    "minecraft": "1.21.1",
+    "java": ">=21",
+    "cloth-config": ">=15.0.140"
+  },
+  "suggests": {
+  }
+}
